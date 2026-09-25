@@ -1,0 +1,64 @@
+<section class="pagina">
+  <header class="resumo">
+    <p class="rotulo-do-resumo">Categorias</p>
+
+    <p class="total numero-tabular">{{ quantidadeDeAtivas() }} ativas</p>
+
+    <div class="detalhe-do-resumo">
+      <span>{{ servicoDeCategorias.categorias().length }} no total</span>
+
+      @if (quantidadeDeInativas() > 0) {
+        <span class="separador" aria-hidden="true">·</span>
+        <span>
+          {{ quantidadeDeInativas() }}
+          {{ quantidadeDeInativas() === 1 ? 'inativa' : 'inativas' }}
+        </span>
+      }
+    </div>
+  </header>
+
+  @if (formularioVisivel()) {
+    <section class="cartao bloco-do-formulario">
+      <div class="cabecalho-do-bloco">
+        <h2>Nova categoria</h2>
+
+        @if (tela.ehTelaEstreita()) {
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="Fechar o formulário"
+            (click)="fecharFormulario()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        } @else {
+          <p class="dica">O nome precisa ser único; a cor é usada no gráfico do painel.</p>
+        }
+      </div>
+
+      <app-formulario-de-categoria [salvando]="salvando()" (salvar)="criar($event)" />
+    </section>
+  }
+
+  <section class="cartao bloco-da-lista">
+    <app-lista-de-categorias
+      [categorias]="categoriasOrdenadas()"
+      [carregando]="servicoDeCategorias.carregando()"
+      (editar)="aplicarEdicao($event)"
+      (desativar)="desativar($event)"
+      (reativar)="reativar($event)"
+    />
+  </section>
+</section>
+
+@if (tela.ehTelaEstreita() && !formularioVisivel()) {
+  <button
+    mat-fab
+    type="button"
+    class="botao-flutuante"
+    aria-label="Criar uma categoria"
+    (click)="abrirFormulario()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+}

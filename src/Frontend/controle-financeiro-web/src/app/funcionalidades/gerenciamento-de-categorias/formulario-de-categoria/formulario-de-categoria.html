@@ -1,0 +1,59 @@
+<form
+  class="formulario-de-categoria"
+  [formGroup]="formulario"
+  (ngSubmit)="enviar()"
+  (keydown.enter)="aoPressionarEnter($event)"
+>
+  <mat-form-field class="campo-nome">
+    <mat-label>Nome</mat-label>
+    <input
+      matInput
+      #campoDeNome
+      formControlName="nome"
+      autocomplete="off"
+      maxlength="60"
+      placeholder="Ex.: Educação, Saúde, Viagem"
+    />
+    @if (formulario.controls.nome.hasError('required') && formulario.controls.nome.touched) {
+      <mat-error>Nome é obrigatório.</mat-error>
+    } @else if (formulario.controls.nome.hasError('minlength')) {
+      <mat-error>Nome deve ter ao menos 2 caracteres.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="campo-tipo">
+    <mat-label>Tipo</mat-label>
+    <mat-select formControlName="tipo">
+      @for (tipo of tipos; track tipo.valor) {
+        <mat-option [value]="tipo.valor">{{ tipo.rotulo }}</mat-option>
+      }
+    </mat-select>
+    @if (formulario.controls.tipo.invalid && formulario.controls.tipo.touched) {
+      <mat-error>Escolha um tipo.</mat-error>
+    }
+  </mat-form-field>
+
+  <div class="campo-cor">
+    <input
+      type="color"
+      class="seletor-de-cor"
+      [value]="corParaOPicker()"
+      (input)="aoEscolherNoPicker($event)"
+      aria-label="Escolher cor da categoria"
+    />
+    <mat-form-field subscriptSizing="dynamic" class="campo-cor-texto">
+      <mat-label>Cor</mat-label>
+      <input matInput formControlName="cor" placeholder="#2E7D32" maxlength="7" />
+      @if (formulario.controls.cor.invalid && formulario.controls.cor.touched) {
+        <mat-error>Formato #RRGGBB.</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="acoes">
+    <button mat-flat-button type="submit" [disabled]="salvando()">
+      <mat-icon>add</mat-icon>
+      Criar categoria
+    </button>
+  </div>
+</form>

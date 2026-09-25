@@ -3,10 +3,9 @@
 Aplicação de controle financeiro pessoal: lançar gastos por categoria, registrar entradas,
 definir um teto por categoria e ver num painel para onde o dinheiro do mês está indo.
 
-> **Estado atual: pronto para deploy.** As quatro telas estão de pé — despesas, receitas, tetos
-> por categoria e painel do mês — sobre o backend completo, com migrations, Swagger, health check
-> e 202 testes de unidade. A configuração de deploy está escrita e nada foi publicado ainda;
-> veja [Deploy](#deploy).
+> **Estado atual: em produção.** Cinco telas de pé — despesas, receitas, categorias, tetos por
+> categoria e painel do mês — sobre o backend completo, com migrations, Swagger, health check e
+> 202 testes de unidade. Publicado em Neon + Render + Vercel; veja [Deploy](#deploy).
 
 ---
 
@@ -119,6 +118,10 @@ Pontos que valem saber:
 - **A competência é global.** `EstadoDaCompetencia` é um serviço de raiz com signals; trocar o mês
   na barra do topo recarrega a tela ativa por um `effect`, e vai valer igual para receitas, tetos
   e painel.
+- **Categorias não são exclusivas de uma tela.** A tela `/categorias` cria, edita, desativa
+  (soft delete) e reativa — reaproveitando o `ServicoDeCategorias` que já existia desde a Fase 2
+  para alimentar os seletores de despesa/receita/teto. Nenhuma duplicação de estado: criar uma
+  categoria ali atualiza o cache que as outras telas já leem.
 - **Erros da API viram aviso.** `interceptador-de-erros-http.ts` lê o ProblemDetails e mostra a
   mensagem num snackbar. O erro continua subindo, então o formulário não se limpa quando a
   gravação falha.

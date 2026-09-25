@@ -1,0 +1,103 @@
+@if (carregando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<ul class="lista-de-categorias">
+  @for (categoria of categorias(); track categoria.id) {
+    <li
+      class="linha"
+      [class.linha-inativa]="!categoria.ativa"
+      [class.linha-em-edicao]="idEmEdicao() === categoria.id"
+    >
+      @if (idEmEdicao() === categoria.id) {
+        <form class="edicao" [formGroup]="formularioDeEdicao" (ngSubmit)="confirmarEdicao()">
+          <mat-form-field subscriptSizing="dynamic" class="campo-nome-edicao">
+            <input matInput formControlName="nome" maxlength="60" />
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="campo-tipo-edicao">
+            <mat-select formControlName="tipo">
+              @for (tipo of tipos; track tipo.valor) {
+                <mat-option [value]="tipo.valor">{{ tipo.rotulo }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <div class="campo-cor-edicao">
+            <input
+              type="color"
+              class="seletor-de-cor"
+              [value]="corParaOPickerDaEdicao()"
+              (input)="aoEscolherNoPickerDaEdicao($event)"
+              aria-label="Escolher cor da categoria"
+            />
+            <mat-form-field subscriptSizing="dynamic">
+              <input matInput formControlName="cor" maxlength="7" />
+            </mat-form-field>
+          </div>
+
+          <div class="acoes-da-edicao">
+            <button mat-icon-button type="button" matTooltip="Cancelar" (click)="cancelarEdicao()">
+              <mat-icon>close</mat-icon>
+            </button>
+            <button mat-icon-button type="submit" matTooltip="Salvar">
+              <mat-icon>check</mat-icon>
+            </button>
+          </div>
+        </form>
+      } @else {
+        <span class="ponto-de-cor" [style.background-color]="categoria.corHexadecimal"></span>
+
+        <span class="miolo">
+          <span class="nome">{{ categoria.nome }}</span>
+          <span class="tipo">{{ rotuloDoTipo(categoria.tipo) }}</span>
+        </span>
+
+        @if (!categoria.ativa) {
+          <span class="etiqueta-inativa">Inativa</span>
+        }
+
+        <div class="acoes">
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Editar"
+            [disabled]="idEmEdicao() !== null"
+            (click)="comecarEdicao(categoria)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          @if (categoria.ativa) {
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Desativar"
+              [disabled]="idEmEdicao() !== null"
+              (click)="pedirDesativacao(categoria)"
+            >
+              <mat-icon>visibility_off</mat-icon>
+            </button>
+          } @else {
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Reativar"
+              [disabled]="idEmEdicao() !== null"
+              (click)="reativar.emit(categoria)"
+            >
+              <mat-icon>visibility</mat-icon>
+            </button>
+          }
+        </div>
+      }
+    </li>
+  }
+</ul>
+
+@if (!carregando() && categorias().length === 0) {
+  <div class="lista-vazia">
+    <mat-icon>category</mat-icon>
+    <p>Nenhuma categoria cadastrada.</p>
+  </div>
+}

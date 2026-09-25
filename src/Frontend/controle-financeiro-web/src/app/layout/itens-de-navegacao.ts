@@ -28,6 +28,13 @@ export const ITENS_DE_NAVEGACAO: readonly ItemDeNavegacao[] = [
     disponivel: true,
   },
   {
+    rotulo: 'Categorias',
+    rotuloCurto: 'Categorias',
+    icone: 'category',
+    rota: '/categorias',
+    disponivel: true,
+  },
+  {
     rotulo: 'Tetos por categoria',
     rotuloCurto: 'Tetos',
     icone: 'speed',

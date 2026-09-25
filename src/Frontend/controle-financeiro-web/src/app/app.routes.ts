@@ -19,6 +19,14 @@ export const routes: Routes = [
       ).then((modulo) => modulo.PaginaDeLancamentoDeReceitas),
   },
   {
+    path: 'categorias',
+    title: 'Categorias · Controle Financeiro',
+    loadComponent: () =>
+      import(
+        './funcionalidades/gerenciamento-de-categorias/pagina-de-categorias/pagina-de-categorias'
+      ).then((modulo) => modulo.PaginaDeCategorias),
+  },
+  {
     path: 'tetos',
     title: 'Tetos por categoria · Controle Financeiro',
     loadComponent: () =>
