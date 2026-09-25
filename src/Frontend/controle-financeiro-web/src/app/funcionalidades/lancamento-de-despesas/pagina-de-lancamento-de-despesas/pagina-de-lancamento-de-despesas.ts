@@ -15,6 +15,7 @@ import { EstadoDaCompetencia } from '../../../compartilhado/servicos/estado-da-c
 import { ObservadorDeTamanhoDeTela } from '../../../compartilhado/servicos/observador-de-tamanho-de-tela';
 import { ServicoDeCategorias } from '../../../compartilhado/servicos/servico-de-categorias';
 import { FormatadorDeMoedaBrasileiraPipe } from '../../../nucleo/formatadores/formatador-de-moeda-brasileira.pipe';
+import { FiltroDeDespesas, FiltroDeDespesasValor } from '../filtro-de-despesas/filtro-de-despesas';
 import { FormularioDeDespesa } from '../formulario-de-despesa/formulario-de-despesa';
 import { ServicoDeDespesas } from '../servicos/servico-de-despesas';
 import {
@@ -22,12 +23,15 @@ import {
   TabelaDeDespesasDoMes,
 } from '../tabela-de-despesas-do-mes/tabela-de-despesas-do-mes';
 
+const FILTRO_VAZIO: FiltroDeDespesasValor = { texto: '', categoriaIds: [] };
+
 @Component({
   selector: 'app-pagina-de-lancamento-de-despesas',
   imports: [
     MatButtonModule,
     MatIconModule,
     FormularioDeDespesa,
+    FiltroDeDespesas,
     TabelaDeDespesasDoMes,
     FormatadorDeMoedaBrasileiraPipe,
   ],
@@ -56,15 +60,46 @@ export class PaginaDeLancamentoDeDespesas {
     () => this.tela.ehTelaLarga() || this.abertoEmTelaEstreita(),
   );
 
-  protected readonly totalDoMes = computed(() =>
-    this.despesas().reduce((soma, despesa) => soma + despesa.valor, 0),
+  protected readonly filtro = signal<FiltroDeDespesasValor>(FILTRO_VAZIO);
+
+  protected readonly filtroAtivo = computed(
+    () => this.filtro().texto !== '' || this.filtro().categoriaIds.length > 0,
   );
 
-  /** Para onde foi a maior fatia do mês — a pergunta que a tela existe para responder. */
+  /**
+   * Casa texto com descricao, observacao ou forma de pagamento; categoria combina com "ou"
+   * entre as escolhidas. Os dois criterios juntos combinam com "e".
+   */
+  protected readonly despesasFiltradas = computed(() => {
+    const valorDoFiltro = this.filtro();
+    const texto = valorDoFiltro.texto;
+    const categoriaIds = valorDoFiltro.categoriaIds;
+
+    return this.despesas().filter((despesa) => {
+      const passaCategoria =
+        categoriaIds.length === 0 || categoriaIds.includes(despesa.categoriaId);
+
+      const passaTexto =
+        texto === '' ||
+        despesa.descricao.toLowerCase().includes(texto) ||
+        despesa.nomeDaCategoria.toLowerCase().includes(texto) ||
+        (despesa.observacao?.toLowerCase().includes(texto) ?? false) ||
+        (despesa.formaDePagamento?.toLowerCase().includes(texto) ?? false);
+
+      return passaCategoria && passaTexto;
+    });
+  });
+
+  /** O resumo do topo descreve o que esta na tela: com filtro ativo, e o total filtrado. */
+  protected readonly totalDoMes = computed(() =>
+    this.despesasFiltradas().reduce((soma, despesa) => soma + despesa.valor, 0),
+  );
+
+  /** Para onde foi a maior fatia do que esta sendo exibido no momento. */
   protected readonly maiorCategoria = computed(() => {
     const porCategoria = new Map<string, { nome: string; cor: string; total: number }>();
 
-    for (const despesa of this.despesas()) {
+    for (const despesa of this.despesasFiltradas()) {
       const atual = porCategoria.get(despesa.categoriaId);
 
       porCategoria.set(despesa.categoriaId, {
@@ -115,6 +150,10 @@ export class PaginaDeLancamentoDeDespesas {
 
   protected fecharFormulario(): void {
     this.abertoEmTelaEstreita.set(false);
+  }
+
+  protected aplicarFiltro(valor: FiltroDeDespesasValor): void {
+    this.filtro.set(valor);
   }
 
   protected registrar(dados: DadosDaDespesa): void {

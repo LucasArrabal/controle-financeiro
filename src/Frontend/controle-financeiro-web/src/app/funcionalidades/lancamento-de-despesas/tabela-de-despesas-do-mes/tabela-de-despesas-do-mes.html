@@ -223,6 +223,10 @@
 @if (!carregando() && despesas().length === 0) {
   <div class="lista-vazia">
     <mat-icon>receipt_long</mat-icon>
-    <p>Nenhuma despesa lançada neste mês.</p>
+    @if (filtroAtivo()) {
+      <p>Nenhuma despesa corresponde ao filtro.</p>
+    } @else {
+      <p>Nenhuma despesa lançada neste mês.</p>
+    }
   </div>
 }

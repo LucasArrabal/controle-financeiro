@@ -6,8 +6,11 @@
 
     <div class="detalhe-do-resumo">
       <span>
-        {{ despesas().length }}
-        {{ despesas().length === 1 ? 'lançamento' : 'lançamentos' }}
+        {{ despesasFiltradas().length }}
+        {{ despesasFiltradas().length === 1 ? 'lançamento' : 'lançamentos' }}
+        @if (filtroAtivo()) {
+          de {{ despesas().length }}
+        }
       </span>
 
       @if (maiorCategoria(); as maior) {
@@ -48,10 +51,16 @@
   }
 
   <section class="cartao bloco-da-lista">
+    <app-filtro-de-despesas
+      [categorias]="servicoDeCategorias.ativas()"
+      (filtroAlterado)="aplicarFiltro($event)"
+    />
+
     <app-tabela-de-despesas-do-mes
-      [despesas]="despesas()"
+      [despesas]="despesasFiltradas()"
       [categorias]="servicoDeCategorias.ativas()"
       [carregando]="carregando()"
+      [filtroAtivo]="filtroAtivo()"
       (editar)="aplicarEdicao($event)"
       (excluir)="remover($event)"
     />

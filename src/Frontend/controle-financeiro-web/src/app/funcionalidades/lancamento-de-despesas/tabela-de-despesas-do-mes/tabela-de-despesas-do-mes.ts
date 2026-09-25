@@ -62,6 +62,8 @@ export class TabelaDeDespesasDoMes {
   readonly despesas = input.required<readonly Despesa[]>();
   readonly categorias = input.required<readonly Categoria[]>();
   readonly carregando = input(false);
+  /** Diferencia "nenhum lançamento no mês" de "nenhum resultado para este filtro". */
+  readonly filtroAtivo = input(false);
 
   readonly editar = output<EdicaoDeDespesa>();
   readonly excluir = output<Despesa>();

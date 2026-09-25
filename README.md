@@ -122,6 +122,10 @@ Pontos que valem saber:
   (soft delete) e reativa — reaproveitando o `ServicoDeCategorias` que já existia desde a Fase 2
   para alimentar os seletores de despesa/receita/teto. Nenhuma duplicação de estado: criar uma
   categoria ali atualiza o cache que as outras telas já leem.
+- **Filtro de despesas é do lado do cliente.** A lista do mês já veio inteira da API; filtrar por
+  texto (descrição, categoria, observação ou pagamento) e por categoria acontece num `computed`
+  no navegador, sem nova chamada HTTP. O resumo do topo (total, maior categoria) reflete o que
+  está filtrado, com "X de Y lançamentos" deixando claro que há um filtro ativo.
 - **Erros da API viram aviso.** `interceptador-de-erros-http.ts` lê o ProblemDetails e mostra a
   mensagem num snackbar. O erro continua subindo, então o formulário não se limpa quando a
   gravação falha.
