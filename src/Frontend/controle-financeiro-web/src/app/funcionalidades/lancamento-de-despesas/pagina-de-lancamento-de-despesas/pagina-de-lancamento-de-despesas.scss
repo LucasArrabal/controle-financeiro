@@ -1,0 +1,15 @@
+@use '../../../compartilhado/estilos/pagina-de-lancamentos';
+
+// Só o que é específico da tela de despesas: a categoria que está levando a maior fatia.
+.maior-categoria {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.ponto-de-cor {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex: none;
+}

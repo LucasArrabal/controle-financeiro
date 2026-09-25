@@ -1,0 +1,84 @@
+.cartao-de-indicador {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  height: 100%;
+  padding: 1.25rem;
+  box-sizing: border-box;
+
+  border-radius: var(--raio-cartao);
+  background-color: var(--mat-sys-surface);
+  box-shadow: var(--sombra-suave);
+
+  // Cor do número por padrão; cada tom sobrescreve abaixo.
+  --cor-do-indicador: var(--mat-sys-on-surface);
+  --fundo-da-marca: var(--mat-sys-surface-container-high);
+}
+
+.cartao-de-indicador[data-tom='entrada'] {
+  --cor-do-indicador: var(--mat-sys-primary);
+  --fundo-da-marca: var(--mat-sys-primary-container);
+}
+
+.cartao-de-indicador[data-tom='saida'] {
+  --cor-do-indicador: var(--mat-sys-tertiary);
+  --fundo-da-marca: var(--mat-sys-tertiary-container);
+}
+
+.cartao-de-indicador[data-tom='atencao'] {
+  --cor-do-indicador: var(--mat-sys-error);
+  --fundo-da-marca: var(--mat-sys-error-container);
+}
+
+.marca-do-indicador {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.75rem;
+  background-color: var(--fundo-da-marca);
+  color: var(--cor-do-indicador);
+}
+
+.rotulo {
+  font: var(--mat-sys-label-large);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.valor {
+  font-size: 1.625rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--cor-do-indicador);
+}
+
+.detalhe {
+  margin-top: 0.125rem;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+// Em duas colunas num telefone, "R$ 5.233,70" em corpo cheio transborda o cartão.
+@media (max-width: 899px) {
+  .cartao-de-indicador {
+    padding: 1rem;
+  }
+
+  .marca-do-indicador {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .valor {
+    font-size: 1.375rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .valor {
+    font-size: 1.1875rem;
+  }
+}

@@ -1,0 +1,21 @@
+## .NET
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+.vs/
+
+## Segredos — nada de connection string versionada
+.env
+*.env.local
+appsettings.Local.json
+
+## Angular
+node_modules/
+dist/
+.angular/
+
+## Editores
+.vscode/
+.idea/

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Domínio: C# puro. Nenhum PackageReference e nenhum ProjectReference, de propósito.
+    Se um pacote de infraestrutura aparecer aqui, a regra de dependência foi quebrada.
+  -->
+  <PropertyGroup>
+    <RootNamespace>ControleFinanceiro.Dominio</RootNamespace>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,70 @@
+<section class="pagina">
+  <header class="cabecalho-do-painel">
+    <h1>Painel de {{ estadoDaCompetencia.porExtenso() }}</h1>
+    @if (carregando()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+  </header>
+
+  <div class="grade-de-indicadores">
+    <app-cartao-de-indicador
+      rotulo="Entradas"
+      icone="savings"
+      tom="entrada"
+      [valor]="totalDeReceitasFormatado()"
+    />
+
+    <app-cartao-de-indicador
+      rotulo="Gastos"
+      icone="receipt_long"
+      tom="saida"
+      [valor]="totalDeDespesasFormatado()"
+    />
+
+    <app-cartao-de-indicador
+      rotulo="Saldo"
+      icone="account_balance_wallet"
+      [tom]="saldoEhNegativo() ? 'atencao' : 'neutro'"
+      [valor]="saldoFormatado()"
+      [detalhe]="saldoEhNegativo() ? 'O mês fechou no vermelho' : null"
+    />
+
+    <app-cartao-de-indicador
+      rotulo="Renda comprometida"
+      icone="pie_chart"
+      [tom]="rendaEstourada() ? 'atencao' : 'neutro'"
+      [valor]="rendaComprometidaFormatada()"
+      [detalhe]="detalheDaRenda()"
+    />
+  </div>
+
+  @if (tetosEstourados().length > 0) {
+    <div class="aviso-de-estouro" role="status">
+      <mat-icon>error</mat-icon>
+      <div>
+        <strong>
+          {{ tetosEstourados().length === 1 ? '1 categoria estourou' : tetosEstourados().length + ' categorias estouraram' }}
+          o teto deste mês.
+        </strong>
+        <span>{{ nomesEstourados() }}</span>
+      </div>
+    </div>
+  }
+
+  <div class="grade-de-blocos">
+    <section class="cartao bloco-do-grafico">
+      <h2>Para onde foi o dinheiro</h2>
+
+      <app-grafico-pizza-gastos-por-categoria
+        [gastos]="resumo().gastosPorCategoria"
+        [totalDeDespesas]="resumo().totalDeDespesas"
+      />
+    </section>
+
+    <section class="cartao bloco-dos-tetos">
+      <h2>Consumo dos tetos</h2>
+
+      <app-lista-de-tetos-e-consumo [gastos]="resumo().gastosPorCategoria" />
+    </section>
+  </div>
+</section>

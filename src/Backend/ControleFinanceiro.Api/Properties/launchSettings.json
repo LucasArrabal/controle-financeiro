@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CONTROLEFINANCEIRO_STRING_DE_CONEXAO": "Host=localhost;Port=5432;Database=controle_financeiro;Username=controle;Password=controle_local",
+        "CONTROLEFINANCEIRO_ORIGENS_PERMITIDAS": "http://localhost:4200",
+        "CONTROLEFINANCEIRO_SEMEAR_DADOS_DE_EXEMPLO": "true"
+      }
+    },
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CONTROLEFINANCEIRO_STRING_DE_CONEXAO": "Host=localhost;Port=5432;Database=controle_financeiro;Username=controle;Password=controle_local",
+        "CONTROLEFINANCEIRO_ORIGENS_PERMITIDAS": "http://localhost:4200",
+        "CONTROLEFINANCEIRO_SEMEAR_DADOS_DE_EXEMPLO": "true"
+      }
+    }
+  }
+}

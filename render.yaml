@@ -1,0 +1,40 @@
+# Blueprint do Render para a API. O banco NÃO é criado aqui: ele fica na Neon, que tem
+# free tier de verdade e scale-to-zero. O Render hospeda só o contêiner da API.
+#
+# Como usar: no Render, "New +" → "Blueprint" → aponte para este repositório.
+# Os valores marcados com `sync: false` o Render pergunta na primeira vez e guarda cifrados —
+# nenhum segredo fica versionado.
+
+services:
+  - type: web
+    name: controle-financeiro-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./src/Backend/ControleFinanceiro.Api/Dockerfile
+    # O Dockerfile copia os quatro projetos, então o contexto é a raiz do repositório.
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      # String de conexão da Neon. Use a variante "pooled" e mantenha o SSL exigido:
+      #   Host=ep-xxx-pooler.sa-east-1.aws.neon.tech;Database=controle_financeiro;
+      #   Username=...;Password=...;SSL Mode=Require;Trust Server Certificate=true
+      - key: CONTROLEFINANCEIRO_STRING_DE_CONEXAO
+        sync: false
+
+      # Domínio do frontend na Vercel, sem barra no fim. Aceita vários separados por vírgula.
+      - key: CONTROLEFINANCEIRO_ORIGENS_PERMITIDAS
+        sync: false
+
+      # As migrations rodam no start; o banco da Neon já existe e não deve ser criado.
+      - key: CONTROLEFINANCEIRO_APLICAR_MIGRACOES_NO_START
+        value: "true"
+      - key: CONTROLEFINANCEIRO_CRIAR_BANCO_SE_NAO_EXISTIR
+        value: "false"
+
+      # Nunca ligue isto em produção: são os lançamentos de demonstração.
+      - key: CONTROLEFINANCEIRO_SEMEAR_DADOS_DE_EXEMPLO
+        value: "false"
+
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production

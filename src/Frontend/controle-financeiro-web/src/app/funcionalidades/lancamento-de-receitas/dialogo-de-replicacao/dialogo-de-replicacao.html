@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Repetir nos próximos meses?</h2>
+
+<mat-dialog-content>
+  <p>
+    "{{ dados.descricao }}" está marcada como recorrente. Dá para já lançá-la nos meses
+    seguintes a {{ dados.competenciaDeOrigem }}, mantendo valor e dia do recebimento.
+  </p>
+
+  <mat-button-toggle-group
+    class="escolha-de-meses"
+    [value]="mesesEscolhidos()"
+    (change)="mesesEscolhidos.set($event.value)"
+    aria-label="Quantos meses replicar"
+  >
+    @for (meses of opcoesDeMeses; track meses) {
+      <mat-button-toggle [value]="meses">{{ meses }} meses</mat-button-toggle>
+    }
+  </mat-button-toggle-group>
+
+  <p class="observacao">
+    Meses que já tiverem um lançamento com essa descrição são pulados.
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="recusar()">Agora não</button>
+  <button mat-flat-button type="button" (click)="confirmar()" cdkFocusInitial>Replicar</button>
+</mat-dialog-actions>

@@ -1,0 +1,111 @@
+// Esqueleto das telas de lançamento (despesas e receitas): resumo do mês em destaque,
+// bloco de formulário e bloco de lista. Fica num parcial para as duas telas não divergirem
+// quando uma delas for ajustada.
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0.5rem 1.5rem 2rem;
+  max-width: 78rem;
+  margin: 0 auto;
+}
+
+// --- Resumo do mês -------------------------------------------------------
+.resumo {
+  padding: 0.5rem 0.25rem 0.75rem;
+}
+
+.rotulo-do-resumo {
+  margin: 0;
+  font: var(--mat-sys-label-large);
+  color: var(--mat-sys-on-surface-variant);
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.total {
+  margin: 0.25rem 0 0;
+  font-size: 2.75rem;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--mat-sys-on-surface);
+}
+
+.detalhe-do-resumo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.separador {
+  opacity: 0.5;
+}
+
+// --- Blocos --------------------------------------------------------------
+.cartao {
+  border-radius: var(--raio-cartao);
+  background-color: var(--mat-sys-surface);
+  box-shadow: var(--sombra-suave);
+  // Sem isto, conteúdo largo impede o bloco de encolher e estica a página inteira.
+  min-width: 0;
+}
+
+.bloco-do-formulario {
+  padding: 1.25rem 1.5rem 0.5rem;
+}
+
+.bloco-da-lista {
+  padding: 0.5rem 0 0.25rem;
+  overflow: hidden;
+}
+
+.cabecalho-do-bloco {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+
+  h2 {
+    margin: 0;
+    font: var(--mat-sys-title-medium);
+    font-weight: 600;
+  }
+}
+
+.dica {
+  margin: 0;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+// --- Botão flutuante do celular -----------------------------------------
+.botao-flutuante {
+  position: fixed;
+  right: 1.25rem;
+  bottom: calc(var(--altura-navegacao-inferior) + env(safe-area-inset-bottom) + 1rem);
+  z-index: 18;
+}
+
+@media (max-width: 899px) {
+  .pagina {
+    padding: 0.25rem 0.875rem 1rem;
+    gap: 1rem;
+  }
+
+  .total {
+    font-size: 2.25rem;
+  }
+
+  .bloco-do-formulario {
+    padding: 1rem 1rem 0.25rem;
+  }
+}

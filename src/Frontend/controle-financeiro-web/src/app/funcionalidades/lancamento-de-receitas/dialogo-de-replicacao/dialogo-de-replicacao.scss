@@ -1,0 +1,16 @@
+.escolha-de-meses {
+  display: flex;
+  margin: 1rem 0 0.5rem;
+  border-radius: var(--raio-pilula);
+  overflow: hidden;
+
+  ::ng-deep .mat-button-toggle {
+    flex: 1 1 0;
+  }
+}
+
+.observacao {
+  margin: 0;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}

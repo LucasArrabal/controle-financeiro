@@ -1,0 +1,17 @@
+<div class="aplicacao" [class.aplicacao-no-celular]="tela.ehTelaEstreita()">
+  @if (tela.ehTelaLarga()) {
+    <app-menu-lateral />
+  }
+
+  <div class="coluna-principal">
+    <app-barra-superior />
+
+    <main class="conteudo">
+      <router-outlet />
+    </main>
+  </div>
+</div>
+
+@if (tela.ehTelaEstreita()) {
+  <app-navegacao-inferior />
+}

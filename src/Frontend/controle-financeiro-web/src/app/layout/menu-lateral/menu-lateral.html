@@ -1,0 +1,37 @@
+<nav class="menu-lateral" aria-label="Seções da aplicação">
+  <div class="marca">
+    <span class="simbolo-da-marca" aria-hidden="true">
+      <mat-icon>account_balance_wallet</mat-icon>
+    </span>
+    <span class="nome-da-marca">Controle<br /><strong>Financeiro</strong></span>
+  </div>
+
+  <ul class="lista">
+    @for (item of itens; track item.rota) {
+      <li>
+        @if (item.disponivel) {
+          <a
+            class="item"
+            [routerLink]="item.rota"
+            routerLinkActive="item-ativo"
+            #ativo="routerLinkActive"
+            [attr.aria-current]="ativo.isActive ? 'page' : null"
+          >
+            <mat-icon [class.icone-preenchido]="ativo.isActive">{{ item.icone }}</mat-icon>
+            <span>{{ item.rotulo }}</span>
+          </a>
+        } @else {
+          <span
+            class="item item-indisponivel"
+            matTooltip="Ainda não implementado"
+            matTooltipPosition="right"
+            aria-disabled="true"
+          >
+            <mat-icon>{{ item.icone }}</mat-icon>
+            <span>{{ item.rotulo }}</span>
+          </span>
+        }
+      </li>
+    }
+  </ul>
+</nav>

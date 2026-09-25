@@ -1,0 +1,228 @@
+@if (carregando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (!tela.comportaTabela()) {
+  <!-- ------------------- Tela estreita: lista tocável ------------------- -->
+  <ul class="lista-de-lancamentos">
+    @for (despesa of despesas(); track despesa.id) {
+      <li class="linha" [class.linha-em-edicao]="idEmEdicao() === despesa.id">
+        @if (idEmEdicao() === despesa.id) {
+          <div class="edicao-empilhada">
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>Descrição</mat-label>
+              <input matInput [formControl]="formularioDeEdicao.controls.descricao" maxlength="150" />
+            </mat-form-field>
+
+            <div class="dupla">
+              <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Valor</mat-label>
+                <span matTextPrefix>R$&nbsp;</span>
+                <input matInput [formControl]="formularioDeEdicao.controls.valor" inputmode="decimal" />
+              </mat-form-field>
+
+              <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Data</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="seletorNoCelular"
+                  [formControl]="formularioDeEdicao.controls.dataDoGasto"
+                />
+                <mat-datepicker-toggle matIconSuffix [for]="seletorNoCelular" />
+                <mat-datepicker #seletorNoCelular />
+              </mat-form-field>
+            </div>
+
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>Categoria</mat-label>
+              <mat-select [formControl]="formularioDeEdicao.controls.categoriaId">
+                @for (categoria of categorias(); track categoria.id) {
+                  <mat-option [value]="categoria.id">
+                    <span class="ponto-de-cor" [style.background-color]="categoria.corHexadecimal"></span>
+                    {{ categoria.nome }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>Forma de pagamento</mat-label>
+              <input matInput [formControl]="formularioDeEdicao.controls.formaDePagamento" maxlength="30" />
+            </mat-form-field>
+
+            <div class="acoes-da-edicao">
+              <button mat-button type="button" class="acao-excluir" (click)="pedirExclusao(despesa)">
+                <mat-icon>delete</mat-icon>
+                Excluir
+              </button>
+
+              <span class="espacador"></span>
+
+              <button mat-button type="button" (click)="cancelarEdicao()">Cancelar</button>
+              <button mat-flat-button type="button" (click)="confirmarEdicao()">Salvar</button>
+            </div>
+          </div>
+        } @else {
+          <button class="toque-da-linha" type="button" (click)="comecarEdicao(despesa)">
+            <span class="data-do-lancamento">
+              <span class="dia numero-tabular">{{ apenasODia(despesa.dataDoGasto) }}</span>
+              <span class="mes numero-tabular">/{{ apenasOMes(despesa.dataDoGasto) }}</span>
+            </span>
+
+            <span class="miolo">
+              <span class="descricao">{{ despesa.descricao }}</span>
+              <span class="secundario">
+                <span class="ponto-de-cor" [style.background-color]="despesa.corDaCategoria"></span>
+                {{ despesa.nomeDaCategoria }}
+                @if (despesa.formaDePagamento) {
+                  <span class="separador" aria-hidden="true">·</span>
+                  {{ despesa.formaDePagamento }}
+                }
+              </span>
+            </span>
+
+            <span class="valor numero-tabular">{{ despesa.valor | moedaBrasileira }}</span>
+          </button>
+        }
+      </li>
+    }
+  </ul>
+} @else {
+  <!-- ------------------------ Tela larga: tabela ------------------------ -->
+  <div class="rolagem-da-tabela">
+    <table mat-table [dataSource]="despesas()" class="tabela-de-despesas">
+      <ng-container matColumnDef="dataDoGasto">
+        <th mat-header-cell *matHeaderCellDef>Data</th>
+        <td mat-cell *matCellDef="let despesa">
+          @if (idEmEdicao() === despesa.id) {
+            <mat-form-field subscriptSizing="dynamic" class="campo-na-linha">
+              <input
+                matInput
+                [matDatepicker]="seletorDaLinha"
+                [formControl]="formularioDeEdicao.controls.dataDoGasto"
+              />
+              <mat-datepicker-toggle matIconSuffix [for]="seletorDaLinha" />
+              <mat-datepicker #seletorDaLinha />
+            </mat-form-field>
+          } @else {
+            <span class="numero-tabular">{{ diaEMes(despesa.dataDoGasto) }}</span>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+        <td mat-cell *matCellDef="let despesa">
+          @if (idEmEdicao() === despesa.id) {
+            <mat-form-field subscriptSizing="dynamic" class="campo-na-linha">
+              <input matInput [formControl]="formularioDeEdicao.controls.descricao" maxlength="150" />
+            </mat-form-field>
+          } @else {
+            <span class="descricao">{{ despesa.descricao }}</span>
+            @if (despesa.observacao) {
+              <mat-icon class="marca-de-observacao" [matTooltip]="despesa.observacao">
+                sticky_note_2
+              </mat-icon>
+            }
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="categoria">
+        <th mat-header-cell *matHeaderCellDef>Categoria</th>
+        <td mat-cell *matCellDef="let despesa">
+          @if (idEmEdicao() === despesa.id) {
+            <mat-form-field subscriptSizing="dynamic" class="campo-na-linha">
+              <mat-select [formControl]="formularioDeEdicao.controls.categoriaId">
+                @for (categoria of categorias(); track categoria.id) {
+                  <mat-option [value]="categoria.id">
+                    <span class="ponto-de-cor" [style.background-color]="categoria.corHexadecimal"></span>
+                    {{ categoria.nome }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          } @else {
+            <span class="categoria-da-linha">
+              <span class="ponto-de-cor" [style.background-color]="despesa.corDaCategoria"></span>
+              {{ despesa.nomeDaCategoria }}
+            </span>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="formaDePagamento">
+        <th mat-header-cell *matHeaderCellDef>Pagamento</th>
+        <td mat-cell *matCellDef="let despesa">
+          @if (idEmEdicao() === despesa.id) {
+            <mat-form-field subscriptSizing="dynamic" class="campo-na-linha">
+              <input matInput [formControl]="formularioDeEdicao.controls.formaDePagamento" maxlength="30" />
+            </mat-form-field>
+          } @else {
+            <span class="secundario">{{ despesa.formaDePagamento ?? '—' }}</span>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="valor">
+        <th mat-header-cell *matHeaderCellDef class="alinhado-a-direita">Valor</th>
+        <td mat-cell *matCellDef="let despesa" class="alinhado-a-direita">
+          @if (idEmEdicao() === despesa.id) {
+            <mat-form-field subscriptSizing="dynamic" class="campo-na-linha campo-valor">
+              <input matInput [formControl]="formularioDeEdicao.controls.valor" inputmode="decimal" />
+            </mat-form-field>
+          } @else {
+            <span class="valor numero-tabular">{{ despesa.valor | moedaBrasileira }}</span>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef class="alinhado-a-direita"></th>
+        <td mat-cell *matCellDef="let despesa" class="alinhado-a-direita">
+          @if (idEmEdicao() === despesa.id) {
+            <button mat-icon-button type="button" matTooltip="Salvar" (click)="confirmarEdicao()">
+              <mat-icon>check</mat-icon>
+            </button>
+            <button mat-icon-button type="button" matTooltip="Cancelar" (click)="cancelarEdicao()">
+              <mat-icon>close</mat-icon>
+            </button>
+          } @else {
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Editar"
+              [disabled]="idEmEdicao() !== null"
+              (click)="comecarEdicao(despesa)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              type="button"
+              matTooltip="Excluir"
+              [disabled]="idEmEdicao() !== null"
+              (click)="pedirExclusao(despesa)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+      <tr
+        mat-row
+        *matRowDef="let despesa; columns: colunas"
+        [class.linha-em-edicao]="idEmEdicao() === despesa.id"
+      ></tr>
+    </table>
+  </div>
+}
+
+@if (!carregando() && despesas().length === 0) {
+  <div class="lista-vazia">
+    <mat-icon>receipt_long</mat-icon>
+    <p>Nenhuma despesa lançada neste mês.</p>
+  </div>
+}

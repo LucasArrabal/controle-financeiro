@@ -1,0 +1,261 @@
+.ponto-de-cor {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex: none;
+}
+
+.valor {
+  font-weight: 600;
+}
+
+.secundario {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.separador {
+  opacity: 0.5;
+}
+
+// ====================== Tela estreita: lista ======================
+.lista-de-lancamentos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.linha + .linha {
+  border-top: 1px solid var(--mat-sys-surface-container-high);
+}
+
+.toque-da-linha {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  width: 100%;
+  padding: 0.875rem 1rem;
+
+  background: none;
+  border: none;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    background-color: var(--mat-sys-surface-container);
+  }
+}
+
+.data-do-lancamento {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  border-radius: 0.875rem;
+  background-color: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface-variant);
+
+  .dia {
+    font: var(--mat-sys-title-small);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--mat-sys-on-surface);
+  }
+
+  .mes {
+    font-size: 0.6875rem;
+    line-height: 1.2;
+  }
+}
+
+.miolo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  min-width: 0;
+  flex: 1 1 auto;
+
+  .descricao {
+    font: var(--mat-sys-body-large);
+    font-weight: 500;
+    // Descrição longa não pode empurrar o valor para fora da tela.
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .secundario {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font: var(--mat-sys-body-small);
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.toque-da-linha .valor {
+  flex: none;
+  font: var(--mat-sys-body-large);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.linha-em-edicao {
+  background-color: var(--mat-sys-surface-container);
+}
+
+.edicao-empilhada {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+
+  .dupla {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+}
+
+.acoes-da-edicao {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+
+  .espacador {
+    flex: 1 1 auto;
+  }
+}
+
+.acao-excluir {
+  color: var(--mat-sys-error);
+}
+
+// ======================= Tela larga: tabela =======================
+.rolagem-da-tabela {
+  overflow-x: auto;
+}
+
+.tabela-de-despesas {
+  width: 100%;
+  // Largura fixa por coluna: entrar em modo de edição troca o texto por campos de formulário
+  // sem a tabela inteira se reorganizar e sem empurrar Valor e Ações para fora da tela.
+  table-layout: fixed;
+  // As colunas fixas somam 39,5rem; o resto sobra para a descrição, que é a que precisa de espaço.
+  // Abaixo disso o componente troca para a lista, então a tabela nunca precisa rolar.
+  min-width: 50rem;
+  background: transparent;
+
+  // Linhas separadas por um traço bem claro: o suficiente para o olho seguir a linha
+  // até o valor, sem virar grade de planilha.
+  --mat-table-row-item-outline-color: var(--mat-sys-surface-container-high);
+}
+
+.tabela-de-despesas th {
+  font: var(--mat-sys-label-medium);
+  font-weight: 600;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.tabela-de-despesas tr.mat-mdc-row:hover {
+  background-color: var(--mat-sys-surface-container-low);
+}
+
+.alinhado-a-direita {
+  text-align: right;
+}
+
+// Larga o bastante para a data inteira mais o botão do calendário no modo de edição.
+.mat-column-dataDoGasto {
+  width: 8.5rem;
+}
+
+.mat-column-categoria {
+  width: 9rem;
+}
+
+.mat-column-formaDePagamento {
+  width: 7.5rem;
+}
+
+.mat-column-valor {
+  width: 7rem;
+}
+
+// Larga o bastante para os dois botões de 40px mais o respiro lateral da célula —
+// apertada, a coluna cortava os ícones e mostrava reticências embaixo deles.
+.mat-column-acoes {
+  width: 7.5rem;
+  white-space: nowrap;
+  text-overflow: clip;
+  padding-right: 0.5rem;
+}
+
+// Descrição longa corta com reticências em vez de esticar a linha.
+.mat-column-descricao .descricao {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.categoria-da-linha {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+// Os campos de edição se ajustam à coluna em vez de impor largura própria.
+.campo-na-linha {
+  width: 100%;
+  min-width: 0;
+}
+
+.campo-valor input {
+  text-align: right;
+}
+
+.marca-de-observacao {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.375rem;
+  vertical-align: text-bottom;
+  opacity: 0.5;
+}
+
+.linha-em-edicao {
+  background-color: var(--mat-sys-surface-container);
+}
+
+// ============================ Vazio ============================
+.lista-vazia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3.5rem 1.5rem;
+  color: var(--mat-sys-on-surface-variant);
+  text-align: center;
+
+  mat-icon {
+    font-size: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    opacity: 0.4;
+  }
+
+  p {
+    margin: 0;
+  }
+}

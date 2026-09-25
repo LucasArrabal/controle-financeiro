@@ -1,0 +1,6 @@
+@use '../../../compartilhado/estilos/pagina-de-lancamentos';
+
+// Entrada de dinheiro se distingue de saída pela cor do total.
+.total {
+  color: var(--mat-sys-primary);
+}

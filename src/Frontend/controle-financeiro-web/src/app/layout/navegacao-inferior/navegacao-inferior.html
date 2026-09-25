@@ -1,0 +1,25 @@
+<nav class="navegacao-inferior" aria-label="Seções da aplicação">
+  @for (item of itens; track item.rota) {
+    @if (item.disponivel) {
+      <a
+        class="destino"
+        [routerLink]="item.rota"
+        routerLinkActive="destino-ativo"
+        #ativo="routerLinkActive"
+        [attr.aria-current]="ativo.isActive ? 'page' : null"
+      >
+        <span class="bolha">
+          <mat-icon [class.icone-preenchido]="ativo.isActive">{{ item.icone }}</mat-icon>
+        </span>
+        <span class="rotulo">{{ item.rotuloCurto }}</span>
+      </a>
+    } @else {
+      <span class="destino destino-indisponivel" aria-disabled="true">
+        <span class="bolha">
+          <mat-icon>{{ item.icone }}</mat-icon>
+        </span>
+        <span class="rotulo">{{ item.rotuloCurto }}</span>
+      </span>
+    }
+  }
+</nav>

@@ -1,0 +1,157 @@
+.lista-de-receitas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.linha + .linha {
+  border-top: 1px solid var(--mat-sys-surface-container-high);
+}
+
+.conteudo-da-linha {
+  display: flex;
+  align-items: center;
+  padding-right: 0.5rem;
+}
+
+.toque-da-linha {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.875rem 1rem;
+
+  background: none;
+  border: none;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    background-color: var(--mat-sys-surface-container);
+  }
+}
+
+.data-do-lancamento {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  border-radius: 0.875rem;
+  background-color: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface-variant);
+
+  .dia {
+    font: var(--mat-sys-title-small);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--mat-sys-on-surface);
+  }
+
+  .mes {
+    font-size: 0.6875rem;
+    line-height: 1.2;
+  }
+}
+
+.miolo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  min-width: 0;
+  flex: 1 1 auto;
+
+  .descricao {
+    font: var(--mat-sys-body-large);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.marca-recorrente {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    font-size: 0.9375rem;
+    width: 0.9375rem;
+    height: 0.9375rem;
+  }
+}
+
+.valor {
+  flex: none;
+  font: var(--mat-sys-body-large);
+  font-weight: 600;
+  white-space: nowrap;
+  // Entrada de dinheiro merece se distinguir de saída num relance.
+  color: var(--mat-sys-primary);
+}
+
+.botao-replicar {
+  flex: none;
+}
+
+.linha-em-edicao {
+  background-color: var(--mat-sys-surface-container);
+}
+
+.edicao-empilhada {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+
+  .dupla {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+}
+
+.acoes-da-edicao {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+
+  .espacador {
+    flex: 1 1 auto;
+  }
+}
+
+.acao-excluir {
+  color: var(--mat-sys-error);
+}
+
+.lista-vazia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3.5rem 1.5rem;
+  color: var(--mat-sys-on-surface-variant);
+  text-align: center;
+
+  mat-icon {
+    font-size: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    opacity: 0.4;
+  }
+
+  p {
+    margin: 0;
+  }
+}

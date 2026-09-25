@@ -1,0 +1,26 @@
+.barra-superior {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  min-height: 4rem;
+  padding: 0.5rem 1.5rem;
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+
+  // Sem cor de barra e sem sombra: o fundo é o mesmo da página, e a separação vem
+  // do espaço em volta. É o que tira o ar de "sistema com cabeçalho azul".
+  background-color: var(--mat-sys-surface-container-low);
+}
+
+// Em tela estreita a barra carrega só a competência, que é o controle global da aplicação.
+// O nome da aplicação sai: quem diz onde você está é a navegação inferior, e a página
+// já abre com o mês em tipo grande.
+.barra-estreita {
+  justify-content: center;
+  min-height: 3.5rem;
+  padding-inline: 0.75rem;
+}

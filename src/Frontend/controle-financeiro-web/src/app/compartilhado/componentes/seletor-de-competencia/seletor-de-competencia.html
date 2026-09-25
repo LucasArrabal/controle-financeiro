@@ -1,0 +1,84 @@
+<div class="seletor-de-competencia">
+  <button
+    mat-icon-button
+    type="button"
+    matTooltip="Mês anterior"
+    aria-label="Mês anterior"
+    (click)="estado.irParaMesAnterior()"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <button
+    mat-button
+    type="button"
+    class="rotulo-da-competencia"
+    [matMenuTriggerFor]="menuDeCompetencia"
+    (menuOpened)="aoAbrirMenu()"
+    #gatilho="matMenuTrigger"
+  >
+    <span>{{ estado.porExtenso() }}</span>
+    <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+  </button>
+
+  <button
+    mat-icon-button
+    type="button"
+    matTooltip="Próximo mês"
+    aria-label="Próximo mês"
+    (click)="estado.irParaProximoMes()"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+
+  @if (!estado.ehMesCorrente()) {
+    <button
+      mat-icon-button
+      type="button"
+      matTooltip="Voltar para o mês corrente"
+      aria-label="Voltar para o mês corrente"
+      (click)="estado.irParaMesCorrente()"
+    >
+      <mat-icon>event_repeat</mat-icon>
+    </button>
+  }
+</div>
+
+<mat-menu #menuDeCompetencia="matMenu" class="menu-de-competencia">
+  <div class="cabecalho-do-ano">
+    <button
+      mat-icon-button
+      type="button"
+      aria-label="Ano anterior"
+      (click)="recuarAno($event)"
+    >
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <span class="ano">{{ anoEmFoco() }}</span>
+
+    <button
+      mat-icon-button
+      type="button"
+      aria-label="Próximo ano"
+      (click)="avancarAno($event)"
+    >
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <div class="grade-de-meses">
+    @for (mes of meses; track mes.numero) {
+      <button
+        mat-button
+        type="button"
+        class="mes"
+        [class.mes-selecionado]="ehMesSelecionado(mes.numero)"
+        [attr.aria-label]="mes.nome + ' de ' + anoEmFoco()"
+        (click)="selecionarMes(mes.numero, gatilho)"
+      >
+        {{ mes.abreviacao }}
+      </button>
+    }
+  </div>
+</mat-menu>

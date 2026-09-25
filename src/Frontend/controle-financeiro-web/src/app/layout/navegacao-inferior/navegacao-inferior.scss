@@ -1,0 +1,60 @@
+.navegacao-inferior {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 20;
+
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-items: center;
+
+  height: var(--altura-navegacao-inferior);
+  // Respeita a área da barra de gestos do iPhone.
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: content-box;
+
+  background-color: var(--mat-sys-surface);
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.destino {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.125rem;
+  padding-top: 0.5rem;
+  text-decoration: none;
+  color: var(--mat-sys-on-surface-variant);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bolha {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 2rem;
+  border-radius: var(--raio-pilula);
+  transition: background-color 150ms ease;
+}
+
+.rotulo {
+  font: var(--mat-sys-label-medium);
+}
+
+.destino-ativo {
+  color: var(--mat-sys-on-secondary-container);
+
+  .bolha {
+    background-color: var(--mat-sys-secondary-container);
+  }
+
+  .rotulo {
+    font-weight: 600;
+  }
+}
+
+.destino-indisponivel {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

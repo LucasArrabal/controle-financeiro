@@ -1,0 +1,60 @@
+<ul class="lista-de-tetos">
+  @for (gasto of gastos(); track gasto.categoriaId) {
+    <li class="linha" [attr.data-situacao]="gasto.situacaoDoTeto ?? 'SemTeto'">
+      <div class="cabecalho-da-linha">
+        <span class="identificacao">
+          <span class="ponto-de-cor" [style.background-color]="gasto.corHexadecimal"></span>
+          <span class="nome">{{ gasto.nomeDaCategoria }}</span>
+        </span>
+
+        <span class="valores numero-tabular">
+          <strong>{{ gasto.valorGasto | moedaBrasileira }}</strong>
+          @if (gasto.tetoDefinido !== null) {
+            <span class="de-quanto">de {{ gasto.tetoDefinido | moedaBrasileira }}</span>
+          }
+        </span>
+      </div>
+
+      @if (gasto.tetoDefinido !== null) {
+        <div
+          class="trilho"
+          role="progressbar"
+          [attr.aria-valuenow]="larguraDaBarra(gasto)"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          [attr.aria-label]="'Consumo do teto de ' + gasto.nomeDaCategoria"
+        >
+          <div class="barra" [style.width.%]="larguraDaBarra(gasto)"></div>
+        </div>
+
+        <div class="rodape-da-linha">
+          <span class="situacao">
+            <mat-icon>{{
+              gasto.situacaoDoTeto === 'Estourado'
+                ? 'error'
+                : gasto.situacaoDoTeto === 'EmAtencao'
+                  ? 'warning'
+                  : 'check_circle'
+            }}</mat-icon>
+            {{ descricaoDaSituacao(gasto.situacaoDoTeto) }}
+          </span>
+
+          <span class="consumo numero-tabular">
+            {{ percentualLegivel(gasto.percentualDoTetoConsumido) }} do teto
+          </span>
+        </div>
+      } @else {
+        <p class="sem-teto">
+          Sem teto definido · {{ percentualLegivel(gasto.percentualDoTotalGasto) }} dos gastos do mês
+        </p>
+      }
+    </li>
+  }
+</ul>
+
+@if (gastos().length === 0) {
+  <div class="lista-vazia">
+    <mat-icon>speed</mat-icon>
+    <p>Nenhuma categoria para acompanhar neste mês.</p>
+  </div>
+}

@@ -1,0 +1,125 @@
+// Tema do Angular Material 3. As cores viram variáveis CSS (--mat-sys-*) que todo componente
+// da aplicação consome, então claro e escuro saem de graça.
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+
+  // Acompanha a preferência do sistema. Todas as cores da aplicação vêm de --mat-sys-*,
+  // então não existe cor fixa para ajustar quando o tema vira.
+  color-scheme: light dark;
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$violet-palette,
+        tertiary: mat.$rose-palette,
+      ),
+      typography: (
+        plain-family: (
+          Inter,
+          'Segoe UI',
+          system-ui,
+          sans-serif,
+        ),
+        brand-family: (
+          Inter,
+          'Segoe UI',
+          system-ui,
+          sans-serif,
+        ),
+        bold-weight: 600,
+        medium-weight: 500,
+        regular-weight: 400,
+      ),
+      density: 0,
+    )
+  );
+}
+
+:root {
+  // Escala de arredondamento e espaço da aplicação.
+  --raio-cartao: 1.5rem;
+  --raio-campo: 0.875rem;
+  --raio-pilula: 999px;
+
+  --sombra-suave:
+    0 1px 2px rgb(0 0 0 / 4%),
+    0 10px 30px -18px rgb(0 0 0 / 22%);
+
+  // Altura da navegação inferior, para o conteúdo não terminar embaixo dela.
+  --altura-navegacao-inferior: 4.5rem;
+
+  // Campos e botões acompanham o arredondamento da aplicação.
+  --mdc-outlined-text-field-container-shape: var(--raio-campo);
+  --mdc-filled-text-field-container-shape: var(--raio-campo);
+  --mdc-dialog-container-shape: var(--raio-cartao);
+  --mat-menu-container-shape: 1.25rem;
+  --mat-snack-bar-container-shape: var(--raio-campo);
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  background-color: var(--mat-sys-surface-container-low);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Ícones arredondados do Material Symbols, registrados como fontSet padrão no app.config.ts.
+.material-symbols-rounded {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+// Item de navegação ativo usa o ícone preenchido — é o que diferencia atual de disponível.
+.icone-preenchido {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+// Valores em coluna só alinham com dígitos de mesma largura.
+.numero-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+// Cartões da aplicação: sem borda, canto grande, sombra discreta.
+.mat-mdc-card.cartao {
+  border: none;
+  border-radius: var(--raio-cartao);
+  background-color: var(--mat-sys-surface);
+  box-shadow: var(--sombra-suave);
+}
+
+// Avisos de erro do interceptador HTTP, para não passarem por notificação comum.
+// O seletor encadeia as duas classes do container de propósito: as variáveis
+// `--mdc-snackbar-*` não pintam mais a superfície no Material 22, e a especificidade
+// extra dispensa `!important` seja qual for a ordem das folhas de estilo.
+.mat-mdc-snack-bar-container.aviso-de-erro {
+  .mdc-snackbar__surface {
+    background-color: var(--mat-sys-error-container);
+  }
+
+  .mdc-snackbar__label {
+    color: var(--mat-sys-on-error-container);
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: var(--mat-sys-on-error-container);
+  }
+}
+
+// No celular o aviso sobe acima da navegação inferior, senão fica escondido atrás dela.
+@media (max-width: 899px) {
+  .mat-mdc-snack-bar-container {
+    margin-bottom: calc(var(--altura-navegacao-inferior) + 0.75rem);
+  }
+}

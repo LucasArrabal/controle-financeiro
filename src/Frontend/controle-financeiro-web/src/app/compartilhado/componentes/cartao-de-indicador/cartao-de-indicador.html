@@ -1,0 +1,12 @@
+<div class="cartao-de-indicador" [attr.data-tom]="tom()">
+  <span class="marca-do-indicador" aria-hidden="true">
+    <mat-icon>{{ icone() }}</mat-icon>
+  </span>
+
+  <span class="rotulo">{{ rotulo() }}</span>
+  <span class="valor numero-tabular">{{ valor() }}</span>
+
+  @if (detalhe()) {
+    <span class="detalhe">{{ detalhe() }}</span>
+  }
+</div>

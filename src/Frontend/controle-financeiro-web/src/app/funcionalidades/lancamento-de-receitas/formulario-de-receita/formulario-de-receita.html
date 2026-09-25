@@ -1,0 +1,57 @@
+<form
+  class="formulario-de-receita"
+  [formGroup]="formulario"
+  (ngSubmit)="enviar()"
+  (keydown.enter)="aoPressionarEnter($event)"
+>
+  <mat-form-field class="campo-descricao">
+    <mat-label>Descrição</mat-label>
+    <input
+      matInput
+      #campoDeDescricao
+      formControlName="descricao"
+      autocomplete="off"
+      maxlength="150"
+      placeholder="Ex.: salário, freela, reembolso"
+    />
+    @if (formulario.controls.descricao.hasError('required') && formulario.controls.descricao.touched) {
+      <mat-error>Descrição é obrigatória.</mat-error>
+    } @else if (formulario.controls.descricao.hasError('minlength')) {
+      <mat-error>Descrição deve ter ao menos 2 caracteres.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="campo-valor">
+    <mat-label>Valor</mat-label>
+    <span matTextPrefix>R$&nbsp;</span>
+    <input matInput formControlName="valor" inputmode="decimal" autocomplete="off" placeholder="0,00" />
+    @if (formulario.controls.valor.hasError('required') && formulario.controls.valor.touched) {
+      <mat-error>Valor é obrigatório.</mat-error>
+    } @else if (formulario.controls.valor.hasError('valorIlegivel')) {
+      <mat-error>Valor não reconhecido.</mat-error>
+    } @else if (formulario.controls.valor.hasError('valorNaoPositivo')) {
+      <mat-error>Valor deve ser maior que zero.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="campo-data">
+    <mat-label>Recebimento</mat-label>
+    <input matInput [matDatepicker]="seletorDeData" formControlName="dataDoRecebimento" />
+    <mat-datepicker-toggle matIconSuffix [for]="seletorDeData" />
+    <mat-datepicker #seletorDeData />
+    @if (formulario.controls.dataDoRecebimento.invalid && formulario.controls.dataDoRecebimento.touched) {
+      <mat-error>Informe uma data válida.</mat-error>
+    }
+  </mat-form-field>
+
+  <div class="campo-recorrente">
+    <mat-checkbox formControlName="recorrente">Recebo todo mês</mat-checkbox>
+  </div>
+
+  <div class="acoes">
+    <button mat-flat-button type="submit" [disabled]="salvando()">
+      <mat-icon>add</mat-icon>
+      Lançar
+    </button>
+  </div>
+</form>

@@ -1,0 +1,23 @@
+.aplicacao {
+  display: flex;
+  min-height: 100dvh;
+  background-color: var(--mat-sys-surface-container-low);
+}
+
+.coluna-principal {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  // Sem isto o conteúdo largo empurra a coluna e leva a barra superior junto.
+  min-width: 0;
+}
+
+.conteudo {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+// Espaço para a navegação inferior não cobrir o fim da lista.
+.aplicacao-no-celular .conteudo {
+  padding-bottom: calc(var(--altura-navegacao-inferior) + env(safe-area-inset-bottom) + 1rem);
+}

@@ -1,0 +1,94 @@
+@if (carregando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<ul class="lista-de-receitas">
+  @for (receita of receitas(); track receita.id) {
+    <li class="linha" [class.linha-em-edicao]="idEmEdicao() === receita.id">
+      @if (idEmEdicao() === receita.id) {
+        <div class="edicao-empilhada">
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-label>Descrição</mat-label>
+            <input matInput [formControl]="formularioDeEdicao.controls.descricao" maxlength="150" />
+          </mat-form-field>
+
+          <div class="dupla">
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>Valor</mat-label>
+              <span matTextPrefix>R$&nbsp;</span>
+              <input matInput [formControl]="formularioDeEdicao.controls.valor" inputmode="decimal" />
+            </mat-form-field>
+
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>Recebimento</mat-label>
+              <input
+                matInput
+                [matDatepicker]="seletorDaLinha"
+                [formControl]="formularioDeEdicao.controls.dataDoRecebimento"
+              />
+              <mat-datepicker-toggle matIconSuffix [for]="seletorDaLinha" />
+              <mat-datepicker #seletorDaLinha />
+            </mat-form-field>
+          </div>
+
+          <mat-checkbox [formControl]="formularioDeEdicao.controls.recorrente">
+            Recebo todo mês
+          </mat-checkbox>
+
+          <div class="acoes-da-edicao">
+            <button mat-button type="button" class="acao-excluir" (click)="pedirExclusao(receita)">
+              <mat-icon>delete</mat-icon>
+              Excluir
+            </button>
+
+            <span class="espacador"></span>
+
+            <button mat-button type="button" (click)="cancelarEdicao()">Cancelar</button>
+            <button mat-flat-button type="button" (click)="confirmarEdicao()">Salvar</button>
+          </div>
+        </div>
+      } @else {
+        <div class="conteudo-da-linha">
+          <button class="toque-da-linha" type="button" (click)="comecarEdicao(receita)">
+            <span class="data-do-lancamento">
+              <span class="dia numero-tabular">{{ apenasODia(receita.dataDoRecebimento) }}</span>
+              <span class="mes numero-tabular">/{{ apenasOMes(receita.dataDoRecebimento) }}</span>
+            </span>
+
+            <span class="miolo">
+              <span class="descricao">{{ receita.descricao }}</span>
+              @if (receita.recorrente) {
+                <span class="marca-recorrente">
+                  <mat-icon>autorenew</mat-icon>
+                  Todo mês
+                </span>
+              }
+            </span>
+
+            <span class="valor numero-tabular">{{ receita.valor | moedaBrasileira }}</span>
+          </button>
+
+          @if (receita.recorrente) {
+            <button
+              mat-icon-button
+              type="button"
+              class="botao-replicar"
+              matTooltip="Replicar nos próximos meses"
+              aria-label="Replicar nos próximos meses"
+              (click)="replicar.emit(receita)"
+            >
+              <mat-icon>event_repeat</mat-icon>
+            </button>
+          }
+        </div>
+      }
+    </li>
+  }
+</ul>
+
+@if (!carregando() && receitas().length === 0) {
+  <div class="lista-vazia">
+    <mat-icon>savings</mat-icon>
+    <p>Nenhuma receita lançada neste mês.</p>
+  </div>
+}

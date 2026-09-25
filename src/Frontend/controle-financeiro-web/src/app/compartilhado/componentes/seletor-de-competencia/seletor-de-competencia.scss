@@ -1,0 +1,67 @@
+.seletor-de-competencia {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.125rem;
+  border-radius: var(--raio-pilula);
+  background-color: var(--mat-sys-surface);
+  box-shadow: var(--sombra-suave);
+}
+
+.rotulo-da-competencia {
+  min-width: 10.5rem;
+  font: var(--mat-sys-label-large);
+  font-weight: 600;
+
+  // Só a inicial sobe de caixa. `capitalize` transformaria "setembro de 2026"
+  // em "Setembro De 2026", que não é português.
+  span {
+    display: inline-block;
+    // "setembro de 2026" não pode quebrar em duas linhas e engordar a barra.
+    white-space: nowrap;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .rotulo-da-competencia {
+    min-width: 0;
+    padding-inline: 0.5rem;
+  }
+}
+
+::ng-deep .menu-de-competencia {
+  .cabecalho-do-ano {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25rem 0.75rem;
+
+    .ano {
+      font: var(--mat-sys-title-medium);
+      font-weight: 600;
+    }
+  }
+
+  .grade-de-meses {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+    padding: 0.5rem;
+
+    .mes {
+      min-width: 3.75rem;
+      border-radius: var(--raio-pilula);
+      text-transform: capitalize;
+    }
+
+    .mes-selecionado {
+      background-color: var(--mat-sys-secondary-container);
+      color: var(--mat-sys-on-secondary-container);
+      font-weight: 600;
+    }
+  }
+}

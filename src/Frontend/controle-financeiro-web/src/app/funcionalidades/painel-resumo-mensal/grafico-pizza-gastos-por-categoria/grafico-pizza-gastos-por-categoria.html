@@ -1,0 +1,21 @@
+@if (fatias().length > 0) {
+  <div class="area-do-grafico">
+    <canvas
+      baseChart
+      type="doughnut"
+      [data]="dados()"
+      [options]="opcoes"
+      aria-label="Distribuição dos gastos por categoria"
+    ></canvas>
+
+    <div class="centro-do-grafico" aria-hidden="true">
+      <span class="rotulo-do-centro">Total gasto</span>
+      <span class="valor-do-centro numero-tabular">{{ totalDeDespesas() | moedaBrasileira }}</span>
+    </div>
+  </div>
+} @else {
+  <div class="grafico-vazio">
+    <mat-icon>donut_small</mat-icon>
+    <p>Nenhum gasto neste mês para distribuir.</p>
+  </div>
+}

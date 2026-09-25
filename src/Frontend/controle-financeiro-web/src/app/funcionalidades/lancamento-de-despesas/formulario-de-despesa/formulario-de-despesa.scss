@@ -1,0 +1,60 @@
+// Três colunas largas em vez de uma linha só com os sete campos: espremidos numa linha,
+// rótulos como "Categoria" e a data completa eram cortados em qualquer tela menor que 1600px.
+//
+//   descrição  descrição | valor
+//   data | categoria | pagamento
+//   observação observação | Lançar
+.formulario-de-despesa {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 0.75rem;
+  align-items: start;
+
+  .campo-descricao,
+  .campo-observacao {
+    grid-column: span 2;
+  }
+}
+
+.acoes {
+  // Alinha o botão com a linha de base dos campos, ignorando o espaço da mensagem de erro.
+  padding-top: 0.5rem;
+  justify-self: stretch;
+
+  button {
+    width: 100%;
+  }
+}
+
+.marca-de-cor {
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  margin-right: 0.625rem;
+  border-radius: 50%;
+  vertical-align: baseline;
+}
+
+// No celular: descrição inteira em cima, valor e data lado a lado, o resto empilhado.
+@media (max-width: 899px) {
+  .formulario-de-despesa {
+    grid-template-columns: 1fr 1fr;
+
+    .campo-descricao,
+    .campo-categoria,
+    .campo-pagamento,
+    .campo-observacao {
+      grid-column: span 2;
+    }
+  }
+
+  .acoes {
+    grid-column: span 2;
+    padding-top: 0.25rem;
+    padding-bottom: 0.75rem;
+
+    button {
+      height: 3rem;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    API: referencia Aplicação e Infraestrutura apenas para registrar a injeção de dependência.
+    Os controllers falam só com os manipuladores de caso de uso.
+  -->
+  <PropertyGroup>
+    <RootNamespace>ControleFinanceiro.Api</RootNamespace>
+    <UserSecretsId>controle-financeiro-api</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ControleFinanceiro.Aplicacao\ControleFinanceiro.Aplicacao.csproj" />
+    <ProjectReference Include="..\ControleFinanceiro.Infraestrutura.Dados\ControleFinanceiro.Infraestrutura.Dados.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.3" />
+  </ItemGroup>
+
+</Project>

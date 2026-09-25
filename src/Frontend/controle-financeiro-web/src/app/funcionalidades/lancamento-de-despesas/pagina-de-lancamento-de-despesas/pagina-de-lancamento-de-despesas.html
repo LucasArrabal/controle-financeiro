@@ -1,0 +1,71 @@
+<section class="pagina">
+  <header class="resumo">
+    <p class="rotulo-do-resumo">Gastos de {{ estadoDaCompetencia.porExtenso() }}</p>
+
+    <p class="total numero-tabular">{{ totalDoMes() | moedaBrasileira }}</p>
+
+    <div class="detalhe-do-resumo">
+      <span>
+        {{ despesas().length }}
+        {{ despesas().length === 1 ? 'lançamento' : 'lançamentos' }}
+      </span>
+
+      @if (maiorCategoria(); as maior) {
+        <span class="separador" aria-hidden="true">·</span>
+        <span class="maior-categoria">
+          <span class="ponto-de-cor" [style.background-color]="maior.cor"></span>
+          {{ maior.nome }} leva {{ percentualDaMaiorCategoria() }}%
+        </span>
+      }
+    </div>
+  </header>
+
+  @if (formularioVisivel()) {
+    <section class="cartao bloco-do-formulario">
+      <div class="cabecalho-do-bloco">
+        <h2>Novo lançamento</h2>
+
+        @if (tela.ehTelaEstreita()) {
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="Fechar o formulário"
+            (click)="fecharFormulario()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        } @else {
+          <p class="dica">Enter salva e o foco volta para a descrição.</p>
+        }
+      </div>
+
+      <app-formulario-de-despesa
+        [categorias]="servicoDeCategorias.ativas()"
+        [salvando]="salvando()"
+        (salvar)="registrar($event)"
+      />
+    </section>
+  }
+
+  <section class="cartao bloco-da-lista">
+    <app-tabela-de-despesas-do-mes
+      [despesas]="despesas()"
+      [categorias]="servicoDeCategorias.ativas()"
+      [carregando]="carregando()"
+      (editar)="aplicarEdicao($event)"
+      (excluir)="remover($event)"
+    />
+  </section>
+</section>
+
+@if (tela.ehTelaEstreita() && !formularioVisivel()) {
+  <button
+    mat-fab
+    type="button"
+    class="botao-flutuante"
+    aria-label="Lançar uma despesa"
+    (click)="abrirFormulario()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+}

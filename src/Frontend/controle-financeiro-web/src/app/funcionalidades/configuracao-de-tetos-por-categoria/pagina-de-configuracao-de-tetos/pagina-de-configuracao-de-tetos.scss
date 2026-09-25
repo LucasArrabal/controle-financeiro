@@ -1,0 +1,135 @@
+@use '../../../compartilhado/estilos/pagina-de-lancamentos';
+
+.bloco-dos-tetos {
+  padding: 1.25rem 1.5rem 1.25rem;
+  overflow: hidden;
+}
+
+.aviso-de-estouro {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--raio-cartao);
+  background-color: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+
+  mat-icon {
+    flex: none;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  span {
+    font: var(--mat-sys-body-medium);
+  }
+}
+
+.lista-de-categorias {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.linha {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0;
+
+  & + .linha {
+    border-top: 1px solid var(--mat-sys-surface-container-high);
+  }
+}
+
+.ponto-de-cor {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  flex: none;
+}
+
+.nome {
+  flex: 1 1 auto;
+  min-width: 0;
+  font: var(--mat-sys-body-large);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.campo-limite {
+  flex: none;
+  width: 10rem;
+
+  input {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.rodape-do-bloco {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.explicacao {
+  margin: 0;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.lista-vazia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3rem 1.5rem;
+  color: var(--mat-sys-on-surface-variant);
+  text-align: center;
+
+  mat-icon {
+    font-size: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    opacity: 0.4;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+@media (max-width: 899px) {
+  .bloco-dos-tetos {
+    padding: 1rem 1rem 1rem;
+  }
+
+  // Lado a lado, o rótulo do botão quebra em duas linhas e aperta o título.
+  .cabecalho-do-bloco {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .campo-limite {
+    width: 8rem;
+  }
+
+  .rodape-do-bloco {
+    flex-direction: column;
+    align-items: stretch;
+
+    button {
+      height: 3rem;
+    }
+  }
+}

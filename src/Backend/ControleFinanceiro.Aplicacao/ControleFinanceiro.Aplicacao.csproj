@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Aplicação: conhece só o Domínio. Define as interfaces que a infraestrutura implementa. -->
+  <PropertyGroup>
+    <RootNamespace>ControleFinanceiro.Aplicacao</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ControleFinanceiro.Dominio\ControleFinanceiro.Dominio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+  </ItemGroup>
+
+</Project>
